@@ -1,0 +1,72 @@
+doctype html
+html
+  body
+    form(method="POST")
+      | name:
+      input(type='text', name='name')
+      br
+      | about:
+      input(type='text', name='about')
+      br
+      | type:
+      input(type='text', name='type')
+      br
+      | categories:
+      input(type='text', name='categories')
+      br
+      | address:
+      input(type='text', name='address')
+      br
+      | email:
+      input(type='text', name='email')
+      br
+      | country:
+      input(type='text', name='country')
+      br
+      | contactUser:
+      input(type='text', name='contactUser')
+      br
+      | logo:
+      input(type='text', name='logo')
+      br
+      input(type="submit" value="submit")
+      br
+      br
+      #products
+        | Product1:
+        input(type='text', placeholder='Product Name', name='productName[]')
+        table#addedRows(border="1")
+          tbody
+            tr
+              th
+                input(type='text', name='attributeName[0]' placeholder='Attribute Title')
+            tr
+              td
+                input(type='text', name='attributeValue[0]' placeholder='Attribute Value')
+      #newProducts
+      button#addColumn(type='button') Click to add Column
+      button#addRow(type='button') Click to add Rows
+      br
+      button#addTable(type="button") Click to add product
+    
+    // jQuery 2.1.4
+    script(src='../public/plugins/jQuery/jQuery-2.1.4.min.js')
+    script.
+      $(function(){
+        var count = 1, productCount = 1;
+        $('button#addColumn').click(function(){
+          $('#addedRows tr:first').append('<th><input type="text" name="attributeName['+count+']" placeholder="Attribute Title"></th>');
+          $('#addedRows tr:not(:first-child)').append('<td><input type="text" name="attributeValue['+count+']" placeholder="Attribute Value"></td>');
+          count++;
+        });
+        $('button#addRow').click(function(){
+          //$('#addedRows tbody').after('<tr><td><input type="text" name="attributeName[]"></td></tr>');
+          $('#addedRows tr:first').next('tr').clone().appendTo('#addedRows tbody');
+          //$('#addedRows tr').find('td').after('<td><input type="text" name="attributeValue[]"></td>');
+        });
+        $("button#addTable").click(function(){
+          var newProduct = 'Product'+(productCount+1)+':<input type="text" placeholder="Product Name" name="productName['+productCount+']"/><table id="addedRows" border="1"><tbody><tr><th><input type="text" name="attributeName['+productCount+'][]" placeholder="Attribute Title"/></th></tr><tr><td><input type="text" name="attributeValue['+productCount+'][[0]]" placeholder="Attribute Value"/></td></tr></tbody></table>';
+          $('#products').append(newProduct);
+          productCount++;
+        })
+      });
