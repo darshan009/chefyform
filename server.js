@@ -42,20 +42,25 @@ app.post('/', function(req, res){
     var attributes = new Attributes({
       attributesData: []
     });
-    for (var j=0; j<req.body.attributeName.length; j++) {
+    for (var j=0; j<req.body.attributeName[i].length; j++) {
       var attributesToPush = {};
       attributesToPush = {
-        attributeName: req.body.attributeName[j],
+        attributeName: req.body.attributeName[i][j],
         attributeValue: []
       }
-      console.log(req.body.attributeValue[0][0]);
-      for (k=0; k<req.body.attributeValue[j].length; k++) {
-        attributesToPush.attributeValue.push(req.body.attributeValue[j][k]);
-      }
+      if (typeof req.body.attributeValue[i][j] != undefined && req.body.attributeValue[i][j] instanceof Array)
+        for (var k=0; k<req.body.attributeValue[i][j].length; k++) {
+          attributesToPush.attributeValue.push(req.body.attributeValue[i][j][k]);
+        }
+      else
+        for (var k=0; k<req.body.attributeValue[i].length; k++) {
+          attributesToPush.attributeValue.push(req.body.attributeValue[i][j][k]);
+        }
       attributes.attributesData.push(attributesToPush);
     }
     console.log(attributes);
     product = {
+      productTitle: req.body.productTitle[i],
       productName: req.body.productName[i],
       attributes: attributes._id
     }
@@ -64,11 +69,10 @@ app.post('/', function(req, res){
       if (err) return err;
     })
   }
-  console.log(chefydata.product);
   chefydata.save(function (err) {
     if (err) return err;
   });
-  console.log(chefydata);
+  res.redirect('/')
 });
 
 app.get('/chefydata', function(req, res){

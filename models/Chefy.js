@@ -11,6 +11,7 @@ var chefydataSchema = new mongoose.Schema({
   contactUser: String,
   logo: String,
   product: [{
+    productTitle: String,
     productName: String,
     attributes: {type:mongoose.Schema.ObjectId, ref:'Attributes'}
   }]
